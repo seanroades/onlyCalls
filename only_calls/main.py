@@ -83,7 +83,7 @@ Pretend you are {person['person_name']}.
 You have this persona:
 {person['persona']}
 
-Given a goal and time for the user, you should tell them aggressively to do their goal in the style of your character, use your accomplishments as a reference. Introduce yourself and shame them into talking. Only return your motivational line to them.
+Given a goal and time for the user, you should tell them aggressively to do their goal in the style of your character, use your accomplishments as a reference. Introduce yourself and shame them into doing their goals based on your acheivements. Only return your motivational line to them.
 """},
           {"role": "user", "content": f"""
 Goal:
