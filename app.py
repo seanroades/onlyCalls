@@ -52,6 +52,7 @@ def call():
     try:
         res["to"] = data["to"]
         res["audio_url"] = data["audio_url"]
+        print("\n[RES], ", res)
     except:
         return {"status": "There is no data"}
 
