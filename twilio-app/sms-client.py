@@ -55,7 +55,12 @@ def sms():
     bot_name = "NOT_IMPLEMENTED"
 
     create_reminder(
-        res["Body"], times["human_readable"], res["From"], times["timestampz"], bot_name
+        res["Body"],
+        times["human_readable"],
+        res["From"],
+        times["timestampz"],
+        bot_name,
+        times["utc_timestamp"],
     )
 
     print(times)
