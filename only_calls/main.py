@@ -72,16 +72,16 @@ def upload_reminder(
     # Get public url for audio
     audio_url = supabase.storage.from_("reminders").get_public_url(path_in_bucket)
 
-    # Make request to the api and pass data as form data
-    schedule_api = (
-        "https://cl5u6hgzuc.execute-api.us-west-2.amazonaws.com/test/schedule"
-    )
+    print(f"\n[Uploaded audio]: {audio_url}")
+
+    req_body = {"phone_number": number, "audio_url": audio_url, "time": utc_timestamp}
 
     response = requests.post(
-        schedule_api,
-        data={"phone_number": number, "audio_url": audio_url, "time": utc_timestamp},
+        "https://cl5u6hgzuc.execute-api.us-west-2.amazonaws.com/test/schedule",
+        json=req_body,
     )
 
+    print(response)
     return True
 
 
