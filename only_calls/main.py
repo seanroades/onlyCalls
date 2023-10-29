@@ -196,7 +196,7 @@ def time_safety_checks(time_json):
             pytz.timezone("America/Los_Angeles")
         )  # TODO: generalize timezone
 
-        timestamp = datetime_object.timestamp()
+        timestamp = datetime_object.astimezone(pytz.UTC).timestamp()
         la_timestamp = new_date_time_object.timestamp()  # LA time
         datetime_object = datetime.fromtimestamp(timestamp, pytz.UTC)
         new_date_time_object = datetime.fromtimestamp(
