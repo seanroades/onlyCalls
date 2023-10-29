@@ -180,8 +180,9 @@ def time_safety_checks(time_json):
         human_readable_time = datetime_object.strftime(
             "%H:%M on %B %d, %Y"
         )  # B for full month name
-        current_time = datetime.now()
-
+        
+        current_time = datetime.now(pytz.timezone('UTC'))
+        current_time = current_time.astimezone(pytz.timezone('America/Los_Angeles'))
         # Check there isn't < 3 min difference
         time_difference = datetime_object - current_time
         if time_difference.total_seconds() < 240:  # Check it is > 4 min
