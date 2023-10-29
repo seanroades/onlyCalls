@@ -176,6 +176,7 @@ def time_safety_checks(time_json):
 
     try:
         datetime_object = datetime.strptime(time_str, "%M:%H:%d:%m:%Y")
+
         human_readable_time = datetime_object.strftime(
             "%H:%M on %B %d, %Y"
         )  # B for full month name
@@ -214,15 +215,19 @@ def get_time(message):
     while True:
         try:
             current_time = datetime.now()
+            # Convert current time to PST
+            current_time = current_time.astimezone(pytz.timezone("America/Los_Angeles"))
             human_readable_time = {
                 "min": current_time.minute,
                 "hour": current_time.hour,
                 "day": current_time.day,
                 "month": current_time.month,
                 "year": current_time.year,
-            }  # Converted to a JSON of min, hour, day, month, and year
+            }  # Converted to a JSON of min, hour, day, month, and year in PST
 
             print("get time", "curr time is ", human_readable_time)
+
+            # Human readable in UTC
 
             response = openai.ChatCompletion.create(
                 model="gpt-4",
