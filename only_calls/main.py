@@ -176,7 +176,7 @@ def time_safety_checks(time_json):
 
     try:
         datetime_object = datetime.strptime(time_str, "%M:%H:%d:%m:%Y")
-        datetime_object = datetime_object.replace(tzinfo=pytz.UTC)  # make datetime_object offset-aware
+        datetime_object = datetime_object.replace(tzinfo=pytz.timezone('America/Los_Angeles'))  # Set timezone to PST
         human_readable_time = datetime_object.strftime(
             "%H:%M on %B %d, %Y"
         )  # B for full month name
