@@ -3,7 +3,6 @@ from typing import Iterator
 import openai
 import csv
 import random
-from elevenlabs import set_api_key, generate, Voice, VoiceSettings, play
 import os
 from typing import Union
 from dotenv import load_dotenv
@@ -33,7 +32,6 @@ if (
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_ADMIN)
 
 ## setup 11
-set_api_key(ELEVEN_LABS_API_KEY)
 openai.api_key = OPENAI_API_KEY
 
 
@@ -93,18 +91,37 @@ def remind(json_object) -> None:
 def generate_voice(text, voiceId) -> Union[bytes, Iterator[bytes]]:
     """Returns path of reminder audio to be used for uploading voice, time is human readable for the LLM"""
     print(f"\n[Generating voice with text]: {voiceId}")
-    audio: Union[bytes, Iterator[bytes]] = generate(
-        text=text,
-        model="eleven_multilingual_v2",
-        voice=Voice(
-            voice_id=voiceId,
-            settings=VoiceSettings(
-                stability=0.71, similarity_boost=0.5, style=0.49, use_speaker_boost=True
-            ),
-        ),
-    )
+    CHUNK_SIZE = 1024
 
-    return audio
+    url = f"https://api.elevenlabs.io/v1/text-to-speech/{voiceId}"
+
+    headers = {
+        "Accept": "audio/mpeg",
+        "Content-Type": "application/json",
+        "xi-api-key": f"{ELEVEN_LABS_API_KEY}"
+    }
+
+    data = {
+        "text": text,
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+            "stability": 0.5,
+            "similarity_boost": 0.7,
+            "style": 0.49,
+            "use_speaker_boost": True
+        }
+    }
+
+    response = requests.post(url, json=data, headers=headers)
+
+    chunks = bytearray()
+
+    for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
+        if chunk:
+            chunks.extend(chunk)
+
+    return bytes(chunks)
+
 
 
 def generate_text(goal_data) -> str:
