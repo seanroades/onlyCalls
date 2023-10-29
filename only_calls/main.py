@@ -256,6 +256,8 @@ Future time:
             )
             time_str = response["choices"][0]["message"]["content"]
 
+            print("\n\n[FUNC] returns time_str", time_str)
+
             time_json = json.loads(time_str)  # parse the string into a dictionary
 
             times = time_safety_checks(time_json)
