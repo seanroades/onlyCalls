@@ -30,6 +30,15 @@ def sms():
         return {"status": "There is no data"}
 
     times = get_time(res["Body"])
+
+    if isinstance(times, str):
+        send_message_twilio(
+            from_number=res["From"],
+            to_number=res["To"],
+            message_body=times,
+        )
+        return {"status": "success"}
+
     bot_name = "NOT_IMPLEMENTED"
 
     create_reminder(

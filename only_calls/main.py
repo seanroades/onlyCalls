@@ -98,7 +98,7 @@ def generate_voice(text, voiceId) -> Union[bytes, Iterator[bytes]]:
     headers = {
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
-        "xi-api-key": f"{ELEVEN_LABS_API_KEY}"
+        "xi-api-key": f"{ELEVEN_LABS_API_KEY}",
     }
 
     data = {
@@ -108,8 +108,8 @@ def generate_voice(text, voiceId) -> Union[bytes, Iterator[bytes]]:
             "stability": 0.5,
             "similarity_boost": 0.7,
             "style": 0.49,
-            "use_speaker_boost": True
-        }
+            "use_speaker_boost": True,
+        },
     }
 
     response = requests.post(url, json=data, headers=headers)
@@ -121,7 +121,6 @@ def generate_voice(text, voiceId) -> Union[bytes, Iterator[bytes]]:
             chunks.extend(chunk)
 
     return bytes(chunks)
-
 
 
 def generate_text(goal_data) -> str:
@@ -184,8 +183,8 @@ def time_safety_checks(time_json):
 
         # Check there isn't < 3 min difference
         time_difference = datetime_object - current_time
-        if time_difference.total_seconds() < 120:  # Check it is > 2 min
-            return "Your reminder may be too early to be processed by our systems. Please set it for 3 min or more in the future. If you believe this was a mistake, let us know!"
+        if time_difference.total_seconds() < 240:  # Check it is > 4 min
+            return "Your reminder may be too early to be processed by our systems. Please set it for 5 min or more in the future. If you believe this was a mistake, let us know!"
 
         # Set to PST
         new_date_time_object = datetime_object.replace(tzinfo=pytz.UTC)
