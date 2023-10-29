@@ -184,6 +184,8 @@ def time_safety_checks(time_json):
         current_time = datetime.now(pytz.timezone('UTC'))
         current_time = current_time.astimezone(pytz.timezone('America/Los_Angeles'))
         # Check there isn't < 3 min difference
+        print("\n\n\n[datetime_object]", datetime_object, "\n[current_time]", current_time, "\n\n")
+
         time_difference = datetime_object - current_time
         if time_difference.total_seconds() < 240:  # Check it is > 4 min
             return "Your reminder may be too early to be processed by our systems. Please set it for 5 min or more in the future. If you believe this was a mistake, let us know!"
