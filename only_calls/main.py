@@ -176,11 +176,11 @@ def time_safety_checks(time_json):
 
     try:
         datetime_object = datetime.strptime(time_str, "%M:%H:%d:%m:%Y")
-
+        datetime_object = datetime_object.replace(tzinfo=pytz.UTC)  # make datetime_object offset-aware
         human_readable_time = datetime_object.strftime(
             "%H:%M on %B %d, %Y"
         )  # B for full month name
-        
+
         current_time = datetime.now(pytz.timezone('UTC'))
         current_time = current_time.astimezone(pytz.timezone('America/Los_Angeles'))
         # Check there isn't < 3 min difference
@@ -192,7 +192,7 @@ def time_safety_checks(time_json):
         new_date_time_object = datetime_object.replace(tzinfo=pytz.UTC)
         new_date_time_object = new_date_time_object.astimezone(
             pytz.timezone("America/Los_Angeles")
-        )  # TODO: generalize timezon
+        )  # TODO: generalize timezone
 
         timestamp = datetime_object.timestamp()
         la_timestamp = new_date_time_object.timestamp()  # LA time
