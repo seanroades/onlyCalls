@@ -196,7 +196,8 @@ def time_safety_checks(time_json):
             pytz.timezone("America/Los_Angeles")
         )  # TODO: generalize timezone
 
-        timestamp = datetime_object.astimezone(pytz.UTC).timestamp()
+        timestamp = datetime_object.replace(tzinfo=pytz.timezone('America/Los_Angeles')).astimezone(pytz.UTC).timestamp() # Convert from PST to UTC time
+        
         la_timestamp = new_date_time_object.timestamp()  # LA time
         datetime_object = datetime.fromtimestamp(timestamp, pytz.UTC)
         new_date_time_object = datetime.fromtimestamp(
@@ -257,6 +258,7 @@ Future time:
                     },
                 ],
             )
+            
             time_str = response["choices"][0]["message"]["content"]
 
             print("\n\n[FUNC] returns time_str", time_str)
