@@ -2,8 +2,15 @@ from flask import Flask, request
 from only_calls.main import create_reminder, get_time
 from twilioapp.app import send_message_twilio
 from twilioapp.caller import make_call
+from datetime import datetime
 
 app = Flask(__name__)
+
+
+def convert_timestamp(timestamp):
+    dt = datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S%z")
+    formatted_date = dt.strftime("%H:%M on %B %d, %Y")
+    return formatted_date
 
 
 @app.route("/", methods=["GET"])
@@ -39,7 +46,8 @@ def sms():
     send_message_twilio(
         from_number=res["From"],
         to_number=res["To"],
-        message_body="Reminder set successfully for " + times["human_readable"],
+        message_body="Reminder set successfully for "
+        + convert_timestamp(times["timestampz"]),
     )
 
     return {"status": "success"}
