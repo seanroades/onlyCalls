@@ -214,15 +214,14 @@ def get_time(message):
     """Get time from a prompt, returns a human_readable time and a timestampz"""
     while True:
         try:
-            current_time = datetime.now()
-            # Convert current time to PST
-            current_time = current_time.astimezone(pytz.timezone("America/Los_Angeles"))
+            current_time = datetime.now(pytz.timezone('UTC'))
+            current_time_pst = current_time.astimezone(pytz.timezone('America/Los_Angeles'))
             human_readable_time = {
-                "min": current_time.minute,
-                "hour": current_time.hour,
-                "day": current_time.day,
-                "month": current_time.month,
-                "year": current_time.year,
+                "min": current_time_pst.minute,
+                "hour": current_time_pst.hour,
+                "day": current_time_pst.day,
+                "month": current_time_pst.month,
+                "year": current_time_pst.year,
             }  # Converted to a JSON of min, hour, day, month, and year in PST
 
             print("get time", "curr time is ", human_readable_time)
